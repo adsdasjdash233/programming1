@@ -13,10 +13,10 @@ public class HelloWorldController {
     }
 
     //http://localhost:8080/test
-    @GetMapping("/test")
-    public String test() {
-        return "Hello everyone!";
-    }
+  //  @GetMapping("/test")
+  //  public String test() {
+  //      return "Hello everyone!";
+  //  }
 
     @PostMapping("/test")
     public String testPost() {
