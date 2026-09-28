@@ -15,6 +15,11 @@ public class MemberService {
         List<Member> result = memberRepository.findAll();
         return memberRepository.findAll(); //select * from member
     }
+    //맴버 저장
+    public Member saveMember(Member member) {
+        return memberRepository.save(member); //insert into member values(....)
+    }
+
 
 }
 
