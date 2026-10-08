@@ -17,5 +17,8 @@ public class Member {
         private Long id;
         @Column(name = "name", nullable = false) // id칸의 null을 비허용 name은 선택
         private String name;
+        public Member(String name){
+                this.name=name;
+        }
 
 }
