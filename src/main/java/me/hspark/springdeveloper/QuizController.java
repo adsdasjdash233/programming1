@@ -28,12 +28,12 @@ public class QuizController {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~" + code);
         switch (code.value()) {
             case 1:
-                return ResponseEntity.status(403).body("Created!");
+                return ResponseEntity.status(403).body("Forbidden!");
             default:
                 return ResponseEntity.ok().body("OK");
         }
     }
 
-    // [수정] Code record를 QuizController 클래스 내부로 이동하여 가시성 문제 해결
+
     public record Code(int value) {}
 }
