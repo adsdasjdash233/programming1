@@ -6,4 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Long> {
+    // findAll():
+    // findBy():
+    // deleteAll():
+    // deleteByIn :
+    // save:
+
 }

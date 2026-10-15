@@ -37,6 +37,8 @@ class QuizControllerTest {
         // 검증 then
         result.andExpect(status().isCreated())
                 .andExpect(content().string("Created!"));
+
+        //응답 전체 출력
     }
 
     @DisplayName("POST /quiz 요청, 요청 바디에 {'value':1}이면 응답 코드는 403, 응답 본문은 Forbidden!")
