@@ -69,6 +69,7 @@ class MemberRepositoryTest {
     public void saveMember() {
         //준비 given: 데이터 준비
         Member member = new Member();
+        member.setName("A"); // <-- 이 부분을 추가해주세요!
 
         //실행 when:
         memberRepository.save(member);
