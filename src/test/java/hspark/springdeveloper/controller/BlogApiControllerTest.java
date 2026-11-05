@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hspark.springdeveloper.dao.Article;
 import hspark.springdeveloper.dto.ArticleCreationRequest;
 import hspark.springdeveloper.repository.BlogRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -31,6 +34,11 @@ class BlogApiControllerTest {
 
     @Autowired
     private BlogRepository blogRepository;
+
+    @AfterEach
+    public void cleanUp() {
+        blogRepository.deleteAll();
+    }
 
     @DisplayName("addArticle : 블로그 글 추가에 성공한다")
     @Test
@@ -55,5 +63,30 @@ class BlogApiControllerTest {
         Article article = articles.get(0);
         assertThat(article.getTitle()).isEqualTo(title);
         assertThat(article.getContent()).isEqualTo(content);
+    }
+
+    @DisplayName("모든 블로그글 조회에 성공한다.")
+    @Test
+    public void getAllArticles() throws Exception {
+        // 준비 given : url, 데이터
+        String url = "/api/articles";
+        String title = "11월 5일 두번째 시간";
+        String content = "모듈 블로그글 조회 테스트 코드 작성";
+
+        // 블로그 글 데이터 저장
+        blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        // 실행 when : 블로그 글 목록 조회 API에 요청을 보냄
+        ResultActions resultActions = mockMvc.perform(get(url)
+                .accept(MediaType.APPLICATION_JSON));
+
+        // 검증 then : 응답 코드가 200 OK이고, 첫 번째 글의 title과 content가 일치하는지 확인
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value(title))
+                .andExpect(jsonPath("$[0].content").value(content));
     }
 }
