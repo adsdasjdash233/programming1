@@ -3,6 +3,7 @@ package hspark.springdeveloper.controller;
 import hspark.springdeveloper.dao.Article;
 import hspark.springdeveloper.dto.ArticleCreationRequest;
 import hspark.springdeveloper.dto.ArticleResponse;
+import hspark.springdeveloper.dto.ArticleUpdateRequest;
 import hspark.springdeveloper.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,12 +46,20 @@ public class BlogApiController {
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));
     }
+
     @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable long id) {
         blogService.delete(id);
         return ResponseEntity.ok()
                 .build();
     }
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<ArticleResponse> updateArticle(@PathVariable long id, @RequestBody ArticleUpdateRequest request) {
+        Article article = blogService.updateArticle(id, request);
+        ArticleResponse ArticleResponse = new ArticleResponse(article);
+        return ResponseEntity.ok().body(ArticleResponse);
+    }
+
 
 
 }
