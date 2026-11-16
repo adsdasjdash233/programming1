@@ -2,7 +2,8 @@ package hspark.springdeveloper.service;
 
 import hspark.springdeveloper.dao.Article;
 import hspark.springdeveloper.dto.ArticleCreationRequest;
-import hspark.springdeveloper.dto.ArticleUpdateRequest;
+import hspark.springdeveloper.dto.UpdateArticleRequest;
+
 import hspark.springdeveloper.repository.BlogRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class BlogService {
 
     // 컨트롤러에서 호출하는 updateArticle 메서드 추가
     @Transactional
-    public Article updateArticle(long id, ArticleUpdateRequest request) {
+    public Article updateArticle(long id, UpdateArticleRequest request) {
         Article article = blogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
 
