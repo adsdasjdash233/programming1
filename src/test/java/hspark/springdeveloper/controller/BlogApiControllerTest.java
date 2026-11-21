@@ -67,7 +67,7 @@ class BlogApiControllerTest {
         assertThat(article.getContent()).isEqualTo(content);
     }
 
-    @DisplayName("모든 블로그글 조회에 성공한다.")
+    @DisplayName("getAllArticles:모든 블로그글 조회에 성공한다.")
     @Test
     public void getAllArticles() throws Exception {
         // 준비 given : url, 데이터
