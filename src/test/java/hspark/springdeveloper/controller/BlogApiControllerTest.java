@@ -58,33 +58,13 @@ class BlogApiControllerTest {
                 .content(articleStr));
 
         // 검증 then (DB에서 보겠다)
+        result.andExpect(status().isCreated()); // 컨트롤러가 200 OK를 반환하면 isOk()로 변경
+
         List<Article> articles = blogRepository.findAll();
         assertThat(articles.size()).isEqualTo(1);
         Article article = articles.get(0);
         assertThat(article.getTitle()).isEqualTo(title);
         assertThat(article.getContent()).isEqualTo(content);
-    }
-    @DisplayName("findAllArticles: 블로그 글 목록 조회에 성공한다.")
-    @Test
-    public void findAllArticles() throws Exception {
-        // given
-        final String url = "/api/articles";
-        final String title = "title";
-        final String content = "content";
-        blogRepository.save(Article.builder()
-                .title(title)
-                .content(content)
-                .build());
-
-        // when
-        final ResultActions resultActions = mockMvc.perform(get(url)
-                .accept(MediaType.APPLICATION_JSON));
-
-        // then
-        resultActions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].content").value(content))
-                .andExpect(jsonPath("$[0].title").value(title));
     }
 
     @DisplayName("모든 블로그글 조회에 성공한다.")
@@ -157,5 +137,27 @@ class BlogApiControllerTest {
         Article article = blogRepository.findById(savedArticle.getId()).get();
         assertThat(article.getTitle()).isEqualTo(newTitle);
         assertThat(article.getContent()).isEqualTo(newContent);
+    }
+    @DisplayName("findArticle: 블로그 글 단건 조회에 성공한다.")
+    @Test
+    public void findArticle() throws Exception {
+        // given : 조회할 URL({id})과 테스트용 글 데이터 저장
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+        Article savedArticle = blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        // when : 저장된 글의 id로 단건 조회 GET 요청 전송
+        final ResultActions resultActions = mockMvc.perform(get(url, savedArticle.getId())
+                .accept(MediaType.APPLICATION_JSON));
+
+        // then : 200 OK 상태 코드와 응답 JSON의 title, content 검증
+        resultActions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value(title))
+                .andExpect(jsonPath("$.content").value(content));
     }
 }
