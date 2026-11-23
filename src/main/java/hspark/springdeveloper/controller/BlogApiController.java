@@ -27,7 +27,7 @@ public class BlogApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
     }
 
-    @GetMapping("/api/articles")
+    @GetMapping({"/api/articles", "/api/article"})
     public ResponseEntity<List<ArticleResponse>> getAllArticles() {
         /*
         public ResponseEntity<List<ArticleResponse>> getAllArticles() {
@@ -40,7 +40,8 @@ public class BlogApiController {
         List<ArticleResponse> articleResponseList = blogService.findAll().stream().map(ArticleResponse::new).toList();
         return ResponseEntity.ok().body(articleResponseList);
     }
-    @GetMapping("/api/articles/{id}")
+
+    @GetMapping({"/api/articles/{id}", "/api/article/{id}"})
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
         Article article = blogService.findById(id);
         return ResponseEntity.ok()
@@ -53,13 +54,12 @@ public class BlogApiController {
         return ResponseEntity.ok()
                 .build();
     }
+
     @PutMapping("/api/articles/{id}")
     public ResponseEntity<ArticleResponse> updateArticle(@PathVariable long id, @RequestBody UpdateArticleRequest request) {
         Article article = blogService.updateArticle(id, request);
         ArticleResponse ArticleResponse = new ArticleResponse(article);
         return ResponseEntity.ok().body(ArticleResponse);
     }
-
-
 
 }
