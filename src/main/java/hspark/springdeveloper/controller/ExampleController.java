@@ -28,6 +28,7 @@ public class ExampleController {
     @Getter
     class Person {
         private Long id;
+        private Long blogId;
         private String name;
         private int age;
         private List<String> hobbies;
